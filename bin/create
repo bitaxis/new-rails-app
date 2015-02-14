@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "" ]
+then
+  echo "[31mMissing argument: Supply name of application to create.[0m"
+  exit 1
+fi
+
+if [ "$2" == "" ]
+then
+  RAILS_VERSION=""
+else
+  RAILS_VERSION="--version $2"
+fi
+
+APPNAME=$1
+RUBY=ruby-2.2.0
+
+if [ -d "$APPNAME" ]
+then
+  echo "[31mDirectory \"$APPNAME\" already exist.[0m"
+  exit 2
+fi
+
+echo ""
+echo "[32mCreate directory \"$APPNAME\" and .ruby files[0m"
+mkdir $APPNAME
+echo $RUBY > $APPNAME/.ruby-version
+echo $APPNAME > $APPNAME/.ruby-gemset
+
+# Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
+source "$HOME/.rvm/scripts/rvm"
+
+echo ""
+echo "[32mCreate gemset \"$APPNAME\"[0m"
+cd $APPNAME
+
+echo ""
+echo "[32mInstall gems and create the $APPNAME application[0m"
+gem install $RAILS_VERSION rails
+rails new .
+
+echo ""
+echo "[32mDone!  You can now cd into \"$APPNAME\" and start working.[0m"
+echo ""
