@@ -28,7 +28,7 @@ ln -s new-rails-app/bin/create ~/bin/new-rails-app
 
 Much thanks go out to the following folks:
 
-* Wayne Seguin & Michael Papis for writing/maintaining RVM.  It rocks!
+* Wayne Seguin & Michael Papis for writing/maintaining [RVM](http://rvm.io).  It rocks!
 * Bahman Movaqar for his [article](http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt) on
   using Bash's getopt.
 

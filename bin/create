@@ -18,8 +18,8 @@ while true ; do
          *) RAILS=$2 ; shift 2 ;;
       esac ;;
     -h|--help)
-      #             1         2         3         4         5         6         7         8
-      #    12345678901234567890123456789012345678901234567890123456789012345678901234567890
+      #              1         2         3         4         5         6         7
+      #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
       echo "Usage: bin/create [options] PATH"
       echo ""
       echo "  Handy script to create a new Rails application."
@@ -33,10 +33,10 @@ while true ; do
       echo "Options:"
       echo ""
       echo "  -a VERSION, --rails VERSION   Use specified version of Rails.  If omitted,"
-      echo "                                use latest version."
+      echo "                                defaults to latest version."
       echo ""
       echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby.  If omitted,"
-      echo "                                use version $RUBY."
+      echo "                                defautls to version $RUBY."
       echo ""
       exit 1 ;;
     -r|--ruby)
