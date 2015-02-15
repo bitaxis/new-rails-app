@@ -54,7 +54,7 @@ done
 
 if [ "$1" == "" ]
 then
-  echo "[31mMissing argument: Supply name of application to create.[0m"
+  echo "[31mMissing argument: Supply path to application to create.[0m"
   exit 1
 fi
 
@@ -83,13 +83,15 @@ cd "$APPPATH"
 if [ "$RAILS" == "" ]
 then
   RAILS_VERSION=""
-  echo "[32mInstall latest version of Rails and create the \"$APPNAME\" application[0m"
+  echo "[32mInstall latest version of Rails[0m"
 else
   RAILS_VERSION="--version $RAILS"
-  echo "[32mInstall version $RAILS of Rails and create the \"$APPNAME\" application[0m"
+  echo "[32mInstall version $RAILS of Rails[0m"
 fi
 
 gem install $RAILS_VERSION rails
+
+echo "[32mCreate the \"$APPNAME\" application[0m"
 rails new .
 
 echo ""
