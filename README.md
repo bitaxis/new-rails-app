@@ -6,9 +6,9 @@ A handy script to create new Rails application skeletons.
 
 This script assumes you have the following installed already:
 
-* RVM
+* [RVM](http://rvm.io)
 * One or more Rubies
-* Bundler
+* [Bundler](http://bundler.io)
 
 ## Usage
 
