@@ -1,4 +1,47 @@
 #!/usr/bin/env bash
+#
+# Usage: bin/create [options] path/of/app
+#
+# -r=version, --ruby version    Version of Ruby to use
+# -a=version, --rails version   Version of Rails to use
+#
+# http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
+
+RUBY="2.2.0"
+
+TEMP=`getopt -n bin/create -o a:hr: -l rails:,help,ruby: -- "$@"`
+eval set -- "$TEMP"
+
+while true ; do
+  case "$1" in
+    -a|--rails)
+      case "$2" in
+        "")  shift 2 ;;
+         *) RAILS=$2 ; shift 2 ;;
+      esac ;;
+    -h|--help)
+      echo "Usage: bin/create [options] path/of/app"
+      echo ""
+      echo "  Handy script to create a new Rails application."
+      echo ""
+      echo "Options:"
+      echo ""
+      echo "  -a VERSION, --rails VERSION   Use specified version of Rails."
+      echo "                                If omitted, use latest version."
+      echo ""
+      echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby."
+      echo "                                If omitted, use version $RUBY."
+      echo ""
+      exit 1 ;;
+    -r|--ruby)
+      case "$2" in
+        "") shift 2 ;;
+         *) RUBY=$2 ; shift 2 ;;
+      esac ;;
+    --) shift ; break ;;
+    *) echo "Internal error!" ; exit 1 ;;
+  esac
+done
 
 if [ "$1" == "" ]
 then
@@ -6,40 +49,40 @@ then
   exit 1
 fi
 
-if [ "$2" == "" ]
-then
-  RAILS_VERSION=""
-else
-  RAILS_VERSION="--version $2"
-fi
+APPPATH=$1
+APPNAME=`basename $APPPATH`
 
-APPNAME=$1
-RUBY=ruby-2.2.0
-
-if [ -d "$APPNAME" ]
+if [ -d "$APPPATH" ]
 then
-  echo "[31mDirectory \"$APPNAME\" already exist.[0m"
+  echo "[31mDirectory $APPPATH already exist.[0m"
   exit 2
 fi
 
-echo ""
-echo "[32mCreate directory \"$APPNAME\" and .ruby files[0m"
-mkdir $APPNAME
-echo $RUBY > $APPNAME/.ruby-version
-echo $APPNAME > $APPNAME/.ruby-gemset
+echo "[32mCreate directory $APPPATH[0m"
+mkdir "$APPPATH"
+
+echo "[32mCreate $APPPATH/.ruby files[0m"
+echo "ruby-$RUBY" > $APPPATH/.ruby-version
+echo $APPNAME > $APPPATH/.ruby-gemset
 
 # Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
 source "$HOME/.rvm/scripts/rvm"
 
-echo ""
 echo "[32mCreate gemset \"$APPNAME\"[0m"
-cd $APPNAME
+cd "$APPPATH"
 
-echo ""
-echo "[32mInstall gems and create the $APPNAME application[0m"
+if [ "$RAILS" == "" ]
+then
+  RAILS_VERSION=""
+  echo "[32mInstall latest version of Rails and create the \"$APPNAME\" application[0m"
+else
+  RAILS_VERSION="--version $RAILS"
+  echo "[32mInstall version $RAILS of Rails and create the \"$APPNAME\" application[0m"
+fi
+
 gem install $RAILS_VERSION rails
 rails new .
 
 echo ""
-echo "[32mDone!  You can now cd into \"$APPNAME\" and start working.[0m"
+echo "[32mDone!  You can now cd into \"$APPPATH\" and start working.[0m"
 echo ""
