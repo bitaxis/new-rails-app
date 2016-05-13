@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
 
-RUBY="2.2.0"    # Default Ruby version
-VERSION="0.0.1" # Version of the script
+RUBY="2.3.0"    # Default Ruby version
+VERSION="0.0.2" # Version of the script
 
 ##
 # Parse arguments
