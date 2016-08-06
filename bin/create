@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
 
-RUBY="2.2.0"    # Default Ruby version
-VERSION="0.0.1" # Version of the script
+RAILS_OPTS=""
+RUBY="2.3.1"    # Default Ruby version
+VERSION="0.1.0" # Version of the script
 
 ##
 # Parse arguments
 
-TEMP=`getopt -n bin/create -o a:hr:v -l rails:,help,ruby:,version -- "$@"`
+TEMP=`getopt -n bin/create -o a:hpr:v -l api,help,rails:,ruby:,version -- "$@"`
 eval set -- "$TEMP"
 
 while true ; do
@@ -17,6 +18,9 @@ while true ; do
         "")  shift 2 ;;
          *) RAILS=$2 ; shift 2 ;;
       esac ;;
+    -p|--api)
+      RAILS_OPTS+=" --api" ;
+      shift 1 ;;
     -h|--help)
       #              1         2         3         4         5         6         7
       #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -38,6 +42,8 @@ while true ; do
       echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby.  If omitted,"
       echo "                                defautls to version $RUBY."
       echo ""
+      echo "  -p,         --api             Create API-only application (requires"
+      echo "                                Rails >= 5)"
       exit 1 ;;
     -r|--ruby)
       case "$2" in
@@ -70,7 +76,7 @@ fi
 echo "[32mCreate directory $APPPATH[0m"
 mkdir "$APPPATH"
 
-echo "[32mCreate $APPPATH/.ruby files[0m"
+echo "[32mCreate $APPPATH/.ruby-* files[0m"
 echo "ruby-$RUBY" > $APPPATH/.ruby-version
 echo $APPNAME > $APPPATH/.ruby-gemset
 
@@ -92,8 +98,9 @@ fi
 gem install $RAILS_VERSION rails
 
 echo "[32mCreate the \"$APPNAME\" application[0m"
-rails new .
+rails new . $RAILS_OPTS
 
 echo ""
 echo "[32mDone!  You can now cd into \"$APPPATH\" and start working.[0m"
 echo ""
+
