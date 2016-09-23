@@ -67,7 +67,8 @@ done
 
 if [ "$1" == "" ]
 then
-  echo "[31mMissing argument: Supply path to application to create.[0m"
+  echo "[31mMissing argument: Supply path to application to create.  Use -h option for"
+  echo "more information.[0m"
   exit 1
 fi
 
