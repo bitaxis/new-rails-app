@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
 
+GETOPT=${GNU_GETOPT:-getopt}
 BINDIR="`pwd`/bin"
 RAILS_OPTS=""
 RUBY="2.3.1"    # Default Ruby version
@@ -9,7 +10,7 @@ VERSION="0.2.0" # Version of the script
 ##
 # Parse arguments
 
-TEMP=`${BINDIR}/getopt -n bin/create -o a:hnpr:v -l api,help,no-api,rails:,ruby:,version -- "$@"`
+TEMP=`${GETOPT} -n bin/create -o a:hnpr:v -l api,help,no-api,rails:,ruby:,version -- "$@"`
 eval set -- "$TEMP"
 
 while true ; do
