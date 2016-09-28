@@ -6,7 +6,7 @@ A handy script to create new Rails application skeletons.
 
 This script assumes you have the following installed:
 
-* getopt(1)(http://frodo.looijaard.name/project/getopt) 1.1.6 or greater
+* [getopt(1)](http://frodo.looijaard.name/project/getopt) 1.1.6 or greater
 * [RVM](http://rvm.io) for Ruby and gemset management
 * One or more Rubies
 
