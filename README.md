@@ -4,12 +4,11 @@ A handy script to create new Rails application skeletons.
 
 ## Requirements
 
-This script assumes you have the following installed already:
+This script assumes you have the following installed:
 
-* getopt(1) 1.1.6 or greater (http://frodo.looijaard.name/project/getopt)
-* [RVM](http://rvm.io)
+* getopt(1)(http://frodo.looijaard.name/project/getopt) 1.1.6 or greater
+* [RVM](http://rvm.io) for Ruby and gemset management
 * One or more Rubies
-* [Bundler](http://bundler.io)
 
 ## Usage
 
@@ -34,6 +33,8 @@ If you are on Mac OS X El Capitan and are unable to install getopt(1), try using
 $ export GETOPT1=/path-to-new-rails-app/bin/getopt
 $ /path-to-new-rails-app/bin/create ...
 ```
+
+Of course, you're welcome to find alternate copies of getopt(1) and supply the path to it.
 
 ## Credits
 
