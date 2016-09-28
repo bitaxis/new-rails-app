@@ -43,4 +43,4 @@ Much thanks go out to the following folks:
 * Wayne Seguin & Michael Papis for writing/maintaining [RVM](http://rvm.io).  It rocks!
 * Bahman Movaqar for his [article](http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt) on
   using Bash's getopt.
-
+* Frodo Looijaard for his work on [getopt(1)](http://frodo.looijaard.name/project/getopt).
