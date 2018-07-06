@@ -5,7 +5,7 @@ GETOPT=${GETOPT1:-getopt}
 BINDIR="`pwd`/bin"
 RAILS_OPTS=""
 RUBY="2.4.4"    # Default Ruby version
-VERSION="0.4.2" # Version of the script
+VERSION="0.4.3" # Version of the script
 
 ##
 # Parse arguments
@@ -86,7 +86,7 @@ echo "[32mCreate directory $APPPATH[0m"
 mkdir "$APPPATH"
 
 echo "[32mCreate $APPPATH/.ruby-* files[0m"
-echo "ruby-$RUBY" > $APPPATH/.ruby-version
+echo "$RUBY" > $APPPATH/.ruby-version
 echo $APPNAME > $APPPATH/.ruby-gemset
 
 # Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
