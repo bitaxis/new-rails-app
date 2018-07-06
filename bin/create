@@ -4,15 +4,16 @@
 set -e
 
 GETOPT=${GETOPT1:-getopt}
+GITFLOW=default           # Can be "default", "skip", or "verbose"
 BINDIR="`pwd`/bin"
 RAILS_OPTS=""
-RUBY="2.4.4"    # Default Ruby version
-VERSION="0.4.3" # Version of the script
+RUBY="2.4.4"              # Default Ruby version
+VERSION="0.5.0"           # Version of the script
 
 ##
 # Parse arguments
 
-TEMP=`${GETOPT} -n bin/create -o a:hnpr:v -l api,help,no-api,rails:,ruby:,version -- "$@"`
+TEMP=`${GETOPT} -n bin/create -o a:gGhnpr:v -l api,git-flow,help,no-api,no-git-flow,rails:,ruby:,version -- "$@"`
 eval set -- "$TEMP"
 
 while true ; do
@@ -22,6 +23,12 @@ while true ; do
         "")  shift 2 ;;
          *) RAILS=$2 ; shift 2 ;;
       esac ;;
+    -g|--git-flow)
+      GITFLOW=verbose
+      shift 1 ;;
+    -G|--no-git-flow)
+      GITFLOW=skip
+      shift 1 ;;
     -n|--no-api)
       RAILS_OPTS+=" --no-api" ;
       shift 1 ;;
@@ -45,6 +52,10 @@ while true ; do
       echo ""
       echo "  -a VERSION, --rails VERSION   Use specified version of Rails.  If omitted,"
       echo "                                defaults to latest version."
+      echo "  -g,         --git-flow        Run \"git flow init\" (will prompt user for"
+      echo "                                input)"
+      echo ""
+      echo "  -G,         --no-git-flow     Do not run \"git flow init -d\""
       echo ""
       echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby.  If omitted,"
       echo "                                defautls to version $RUBY."
@@ -112,6 +123,20 @@ gem install $RAILS_VERSION rails
 
 echo "[32mCreate the \"$APPNAME\" application[0m"
 rails new . $RAILS_OPTS --skip
+
+case "$GITFLOW" in
+  default)
+    echo "[32mInitialize git flow with default values[0m"
+    git flow init -d ;;
+  skip)
+    echo "[32mNot initializing git flow[0m"
+    ;;
+  verbose)
+    echo "[32mInitialize git flow with prompts[0m"
+    git flow init ;;
+  *)
+    echo "Unexpected GITFLOW value of \"$GITFLOW\"!" ; exit 1 ;;
+esac
 
 echo ""
 echo "[32mDone!  You can now cd into \"$APPPATH\" and start working.[0m"
