@@ -3,9 +3,10 @@
 
 set -e
 
+BINDIR="`pwd`/bin"
+GEMSET_PREFIX=""
 GETOPT=${GETOPT1:-getopt}
 GITFLOW=default           # Can be "default", "skip", or "verbose"
-BINDIR="`pwd`/bin"
 RAILS_OPTS=""
 RUBY="2.4.4"              # Default Ruby version
 VERSION="0.5.0"           # Version of the script
@@ -13,28 +14,11 @@ VERSION="0.5.0"           # Version of the script
 ##
 # Parse arguments
 
-TEMP=`${GETOPT} -n bin/create -o a:gGhnpr:v -l api,git-flow,help,no-api,no-git-flow,rails:,ruby:,version -- "$@"`
+TEMP=`${GETOPT} -n bin/create -o a:e:gGhnpr:s:v -l api,gemset:,gemset-prefix:,git-flow,help,no-api,no-git-flow,rails:,ruby:,version -- "$@"`
 eval set -- "$TEMP"
 
 while true ; do
   case "$1" in
-    -a|--rails)
-      case "$2" in
-        "")  shift 2 ;;
-         *) RAILS=$2 ; shift 2 ;;
-      esac ;;
-    -g|--git-flow)
-      GITFLOW=verbose
-      shift 1 ;;
-    -G|--no-git-flow)
-      GITFLOW=skip
-      shift 1 ;;
-    -n|--no-api)
-      RAILS_OPTS+=" --no-api" ;
-      shift 1 ;;
-    -p|--api)
-      RAILS_OPTS+=" --api" ;
-      shift 1 ;;
     -h|--help)
       #              1         2         3         4         5         6         7
       #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -50,26 +34,64 @@ while true ; do
       echo ""
       echo "Options:"
       echo ""
-      echo "  -a VERSION, --rails VERSION   Use specified version of Rails.  If omitted,"
+      echo "  -a VERSION, --rails VERSION   Use specified version of Rails; if omitted,"
+      echo ""
+      echo "  -e PREFIX,  --gemset-prefix PREFIX"
+      echo "                                Add custom gemset name prefix, using a minus"
+      echo "                                character (-) as the delimiter"
       echo "                                defaults to latest version."
       echo "  -g,         --git-flow        Run \"git flow init\" (will prompt user for"
       echo "                                input)"
       echo ""
       echo "  -G,         --no-git-flow     Do not run \"git flow init -d\""
       echo ""
-      echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby.  If omitted,"
-      echo "                                defautls to version $RUBY."
-      echo ""
       echo "  -n,         --no-api          Create non-API application (requires"
       echo "                                Rails >= 5)"
       echo ""
       echo "  -p,         --api             Create API-only application (requires"
       echo "                                Rails >= 5)"
+      echo ""
+      echo "  -r VERSION, --ruby VERSION    Use specified version of Ruby; if omitted,"
+      echo "                                defautls to version $RUBY"
+      echo ""
+      echo "  -s NAME,    --gemset NAME     Use custom gemset name; if omitted, defaults"
+      echo "                                to same name as application directory"
+      echo ""
+      echo "  -v,         --version         Prints script version and exits"
+      #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
+      #              1         2         3         4         5         6         7
       exit 1 ;;
+    -a|--rails)
+      case "$2" in
+        "")  shift 2 ;;
+         *) RAILS=$2 ; shift 2 ;;
+      esac ;;
+    -e|--gemset-prefix)
+      case "$2" in
+        "") shift 2 ;;
+         *) GEMSET_PREFIX=$2- ; shift 2 ;;
+      esac ;;
+    -g|--git-flow)
+      GITFLOW=verbose
+      shift 1 ;;
+    -G|--no-git-flow)
+      GITFLOW=skip
+      shift 1 ;;
+    -n|--no-api)
+      RAILS_OPTS+=" --no-api" ;
+      shift 1 ;;
+    -p|--api)
+      RAILS_OPTS+=" --api" ;
+      shift 1 ;;
     -r|--ruby)
       case "$2" in
         "") shift 2 ;;
          *) RUBY=$2 ; shift 2 ;;
+      esac ;;
+    -s|--gemset)
+      case "$2" in
+        "") shift 2 ;;
+         *) GEMSET=$2 ; shift 2 ;;
       esac ;;
     -v|--version)
       echo $VERSION
@@ -81,13 +103,15 @@ done
 
 if [ "$1" == "" ]
 then
-  echo "[31mMissing argument: Supply path to application to create.  Use -h option for"
-  echo "more information.[0m"
+  #              1         2         3         4         5         6         7
+  #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
+  echo "[31mMissing argument(s); run with -h option for more information[0m"
   exit 1
 fi
 
 APPPATH=$1
 APPNAME=`basename $APPPATH`
+GEMSET=${GEMSET_PREFIX}${GEMSET:-$APPNAME}
 
 if [ -d "$APPPATH" ]
 then
@@ -102,12 +126,12 @@ echo "[32mCreate file $APPPATH/.ruby-version[0m"
 echo "$RUBY" > $APPPATH/.ruby-version
 
 echo "[32mCreate file $APPPATH/.ruby-gemset[0m"
-echo $APPNAME > $APPPATH/.ruby-gemset
+echo $GEMSET > $APPPATH/.ruby-gemset
 
 # Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
 source "$HOME/.rvm/scripts/rvm"
 
-echo "[32mCreate gemset \"$APPNAME\"[0m"
+echo "[32mCreate gemset \"$GEMSET\"[0m"
 cd "$APPPATH"
 
 if [ "$RAILS" == "" ]
