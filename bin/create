@@ -9,7 +9,7 @@ GETOPT=${GETOPT1:-getopt}
 GITFLOW=default           # Can be "default", "skip", or "verbose"
 RAILS_OPTS=""
 RUBY="2.4.4"              # Default Ruby version
-VERSION="0.5.0"           # Version of the script
+VERSION="0.6.0"           # Version of the script
 
 ##
 # Parse arguments
@@ -24,13 +24,12 @@ while true ; do
       #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
       echo "Usage: bin/create [options] PATH"
       echo ""
-      echo "  Handy script to create a new Rails application."
+      echo "  Handy script to create a new Rails application with git-flow support."
       echo "  Currently at version $VERSION."
       echo ""
       echo "Parameters:"
       echo ""
-      echo "  PATH    Path to application you wish to create; can be an absolute or"
-      echo "          relative path."
+      echo "  PATH    Path to application you wish to create; can be absolute or relative."
       echo ""
       echo "Options:"
       echo ""
@@ -40,8 +39,9 @@ while true ; do
       echo "  -e PREFIX,  --gemset-prefix PREFIX"
       echo "                                Add custom gemset name prefix, using a minus"
       echo "                                character (-) as the delimiter"
-      echo "  -g,         --git-flow        Run \"git flow init\" (will prompt user for"
-      echo "                                input)"
+      echo ""
+      echo "  -g,         --git-flow        Run \"git flow init\" manually (will prompt you"
+      echo "                                for input)"
       echo ""
       echo "  -G,         --no-git-flow     Do not run \"git flow init -d\""
       echo ""
