@@ -138,7 +138,7 @@ else
   echo "[32mInstall version $RAILS of Rails[0m"
 fi
 
-gem install $RAILS_VERSION rails
+gem install $RAILS_VERSION rails --no-document
 
 echo "[32mCreate the \"$APPNAME\" application[0m"
 rails new . $@ --skip
