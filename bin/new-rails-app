@@ -3,22 +3,23 @@
 
 set -e
 
+BINDIR="`pwd`/bin"
+GEMSET_PREFIX=""
+GETOPT=${GETOPT1:-getopt}
+GITFLOW=default           # Can be "default", "skip", or "verbose"
+PROGRAM=`basename $0`
+VERSION="1.2.0"           # Version of the script
+
 if [[ `ruby --version` =~ ruby\ ([0-9]+\.[0-9]+\.[0-9]+) ]] ; then
   RUBY=${BASH_REMATCH[1]}
 else
   RUBY=2.6.5              # Default Ruby version
 fi
 
-BINDIR="`pwd`/bin"
-GEMSET_PREFIX=""
-GETOPT=${GETOPT1:-getopt}
-GITFLOW=default           # Can be "default", "skip", or "verbose"
-VERSION="1.2.0"           # Version of the script
-
 ##
 # Parse arguments
 
-TEMP=`${GETOPT} -n new-rails-app -o a:e:gGhr:s:v -l gemset:,gemset-prefix:,git-flow,help,no-git-flow,rails:,ruby:,version -- "$@"`
+TEMP=`${GETOPT} -n $PROGRAM -o a:e:gGhr:s:v -l gemset:,gemset-prefix:,git-flow,help,no-git-flow,rails:,ruby:,version -- "$@"`
 eval set -- "$TEMP"
 
 while true ; do
@@ -58,7 +59,7 @@ while true ; do
       echo "  -v,         --version         Prints script version and exits"
       #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
       #              1         2         3         4         5         6         7
-      exit 1 ;;
+      exit 0 ;;
     -a|--rails)
       case "$2" in
         "")  shift 2 ;;
@@ -103,7 +104,7 @@ if [ "$1" == "" ]
 then
   #              1         2         3         4         5         6         7
   #     1234567890123456789012345678901234567890123456789012345678901234567890123456789
-  echo "[31mMissing argument(s); run with -h option for more information[0m"
+  echo "[31mMissing argument(s); re-run $PROGRAM with -h option for more information[0m"
   exit 1
 fi
 
