@@ -3,11 +3,16 @@
 
 set -e
 
+if [[ `ruby --version` =~ ruby\ ([0-9]+\.[0-9]+\.[0-9]+) ]] ; then
+  RUBY=${BASH_REMATCH[1]}
+else
+  RUBY=2.6.5              # Default Ruby version
+fi
+
 BINDIR="`pwd`/bin"
 GEMSET_PREFIX=""
 GETOPT=${GETOPT1:-getopt}
 GITFLOW=default           # Can be "default", "skip", or "verbose"
-RUBY="2.6.5"              # Default Ruby version
 VERSION="1.2.0"           # Version of the script
 
 ##
