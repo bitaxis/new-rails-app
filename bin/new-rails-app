@@ -126,14 +126,7 @@ mkdir "$APPPATH"
 cd "$APPPATH"
 
 echo "[32mCreate file $APPPATH/.ruby-version[0m"
-# echo "$RUBY" > $APPPATH/.ruby-version
 rbenv local $RUBY
-
-# echo "[32mCreate file $APPPATH/.ruby-gemset[0m"
-# echo $GEMSET > $APPPATH/.ruby-gemset
-
-# Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
-# source "$HOME/.rvm/scripts/rvm"
 
 echo "[32mCreate gemset \"$GEMSET\"[0m"
 rbenv gemset init
