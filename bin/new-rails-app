@@ -13,7 +13,7 @@ VERSION="1.2.0"           # Version of the script
 if [[ `ruby --version` =~ ruby\ ([0-9]+\.[0-9]+\.[0-9]+) ]] ; then
   RUBY=${BASH_REMATCH[1]}
 else
-  RUBY=2.6.5              # Default Ruby version
+  RUBY=2.7.5              # Default Ruby version
 fi
 
 ##
@@ -123,17 +123,13 @@ fi
 echo "[32mCreate directory $APPPATH[0m"
 mkdir "$APPPATH"
 
+cd "$APPPATH"
+
 echo "[32mCreate file $APPPATH/.ruby-version[0m"
-echo "$RUBY" > $APPPATH/.ruby-version
-
-echo "[32mCreate file $APPPATH/.ruby-gemset[0m"
-echo $GEMSET > $APPPATH/.ruby-gemset
-
-# Bring in RVM as a shell function (https://rvm.io/workflow/scripting)
-source "$HOME/.rvm/scripts/rvm"
+rbenv local $RUBY
 
 echo "[32mCreate gemset \"$GEMSET\"[0m"
-cd "$APPPATH"
+rbenv gemset init
 
 if [ "$RAILS" == "" ]
 then
@@ -147,7 +143,7 @@ fi
 gem install $RAILS_VERSION rails --no-document
 
 echo "[32mCreate the \"$APPNAME\" application[0m"
-rails new . $@ --skip
+$HOME/.rbenv/shims/rails new . $@ --skip
 
 case "$GITFLOW" in
   default)
